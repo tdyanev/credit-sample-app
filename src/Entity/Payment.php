@@ -21,6 +21,9 @@ class Payment
     #[ORM\JoinColumn(nullable: false)]
     private ?Credit $Credit = null;
 
+    #[ORM\Column]
+    private ?int $amount = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -46,6 +49,18 @@ class Payment
     public function setCredit(?Credit $Credit): static
     {
         $this->Credit = $Credit;
+
+        return $this;
+    }
+
+    public function getAmount(): ?int
+    {
+        return $this->amount;
+    }
+
+    public function setAmount(int $amount): static
+    {
+        $this->amount = $amount;
 
         return $this;
     }

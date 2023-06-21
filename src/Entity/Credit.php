@@ -32,6 +32,9 @@ class Credit
     #[ORM\OneToMany(mappedBy: 'Credit', targetEntity: Payment::class, orphanRemoval: true)]
     private Collection $payments;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $finished_at = null;
+
     public function __construct()
     {
         $this->payments = new ArrayCollection();
@@ -118,5 +121,35 @@ class Credit
         }
 
         return $this;
+    }
+
+    public function getAmountLeft(): int {
+        return $this->amount - $this->payments->reduce(function(int $accumulator, Payment $payment): int {
+            return $accumulator + $payment->getAmount();
+        }, 0);
+
+    }
+
+    public function getDeadlineDate(): ?\DateTimeInterface {
+        $date = clone $this->date_issued;
+        $date->modify("+{$this->deadline_months} month");
+
+        return $date;
+    }
+
+    public function getFinishedAt(): ?\DateTimeImmutable
+    {
+        return $this->finished_at;
+    }
+
+    public function setFinishedAt(?\DateTimeImmutable $finished_at): static
+    {
+        $this->finished_at = $finished_at;
+
+        return $this;
+    }
+
+    public function isFinished(): bool {
+        return !!$this->finished_at;
     }
 }
