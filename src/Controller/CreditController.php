@@ -29,6 +29,10 @@ class CreditController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            
+
+
             $credit->setDateIssued(new \DateTimeImmutable('now'));
             $creditRepository->save($credit, true);
 

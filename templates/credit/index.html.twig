@@ -9,8 +9,8 @@
         <thead>
             <tr>
                 <th>Id</th>
+                <th>User</th>
                 <th>Amount</th>
-                {# <th>Deadline_months</th> #}
                 <th>Left to pay:</th>
                 <th>Deadline</th>
 
@@ -21,8 +21,8 @@
         {% for credit in credits %}
             <tr>
                 <td>{{ credit.id }}</td>
+                <td>{{ credit.getOwner().getFullName() }}</td>
                 <td>{{ credit.amount }}</td>
-                {# <td>{{ credit.deadlineMonths }}</td> #}
                 <td>{{ credit.getAmountLeft() }}</td>
                 <td>{{ credit.getDeadlineDate() ? credit.getDeadlineDate()|date('Y-m-d') : '' }}</td>
 
