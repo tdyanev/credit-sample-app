@@ -29,6 +29,7 @@ class CreditController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $credit->setDateIssued(new \DateTimeImmutable('now'));
             $creditRepository->save($credit, true);
 
             return $this->redirectToRoute('app_credit_index', [], Response::HTTP_SEE_OTHER);

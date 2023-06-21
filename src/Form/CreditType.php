@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Credit;
+use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -14,8 +16,11 @@ class CreditType extends AbstractType
         $builder
             ->add('amount')
             ->add('deadline_months')
-            ->add('date_issued')
-            ->add('owner')
+            //->add('date_issued')
+            ->add('owner', EntityType::class, [
+                'class' => User::class,
+                'choice_label' => 'full_name',
+            ])
         ;
     }
 
