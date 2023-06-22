@@ -42,17 +42,17 @@ class CreditRepository extends ServiceEntityRepository
 //    /**
 //     * @return Credit[] Returns an array of Credit objects
 //     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+   public function findByOwnerId($id): array
+   {
+       return $this->createQueryBuilder('c')
+           ->andWhere('c.owner = :val')
+           ->setParameter('val', $id)
+           ->orderBy('c.id', 'ASC')
+        //    ->setMaxResults(10)
+           ->getQuery()
+           ->getResult()
+       ;
+   }
 
 //    public function findOneBySomeField($value): ?Credit
 //    {

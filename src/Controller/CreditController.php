@@ -10,14 +10,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/credit')]
+#[Route('/profile/credit')]
 class CreditController extends AbstractController
 {
     #[Route('/', name: 'app_credit_index', methods: ['GET'])]
     public function index(CreditRepository $creditRepository): Response
     {
         return $this->render('credit/index.html.twig', [
-            'credits' => $creditRepository->findAll(),
+            'credits' => $creditRepository->findBy([
+                'owner' => $this->getUser(),
+            ]),
+            'title' => 'My credits',
+            'canPay' => true,
         ]);
     }
 
@@ -30,10 +34,8 @@ class CreditController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            
-
-
             $credit->setDateIssued(new \DateTimeImmutable('now'));
+            $credit->setOwner($this->getUser());
             $creditRepository->save($credit, true);
 
             return $this->redirectToRoute('app_credit_index', [], Response::HTTP_SEE_OTHER);

@@ -161,7 +161,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getEntireCreditAmount() {
         return $this->credits->reduce(function(int $accumulator, Credit $credit): int {
-            return $accumulator + $credit->getAmount();
+            return ($credit->isFinished() ? 0 : $credit->getAmount()) + $accumulator;
         }, 0);
     }
 

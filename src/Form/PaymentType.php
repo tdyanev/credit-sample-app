@@ -15,11 +15,12 @@ class PaymentType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder
-            ->add('owner', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'full_name',
-            ]);
+        //dd($options);
+        // $builder
+        //     ->add('owner', EntityType::class, [
+        //         'class' => User::class,
+        //         'choice_label' => 'full_name',
+        //     ]);
 
         if ($options['credit_id']) {
 
@@ -35,7 +36,7 @@ class PaymentType extends AbstractType
             ->add('Credit', EntityType::class, [
                 'class' => Credit::class,
                 //'choices' => $options['credits'],
-                'choice_label' => 'id',
+                'choice_label' => 'getName',
                 'choice_value' => 'id',
             ]);
         }

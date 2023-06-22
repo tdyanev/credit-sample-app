@@ -11,14 +11,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/payment')]
+#[Route('/profile/payment')]
 class PaymentController extends AbstractController
 {
     #[Route('/', name: 'app_payment_index', methods: ['GET'])]
     public function index(PaymentRepository $paymentRepository): Response
     {
         return $this->render('payment/index.html.twig', [
-            'payments' => $paymentRepository->findAll(),
+            'payments' => $paymentRepository->findBy([
+                'owner' => $this->getUser(),
+            ], [
+                'id' => 'DESC',
+            ]),
         ]);
     }
 
@@ -35,6 +39,30 @@ class PaymentController extends AbstractController
             if ($credit_id) {
                 $payment->setCredit($cr->find($credit_id));
             }
+
+            $payment->setDate(new \DateTimeImmutable('now'));
+            $payment->setOwner($this->getUser());
+
+            $amountLeft = $payment->getCredit()->getAmountLeft() - $payment->getAmount();
+
+            //dd($amountLeft);
+
+            if ($amountLeft <= 0) {
+                $credit = $payment->getCredit();
+
+                $credit->setFinishedAt(new \DateTimeImmutable('now'));
+                $cr->save($credit, true);
+
+                $message = 'This credit is done!';
+
+                if ($amountLeft < 0) {
+                    $message .= sprintf(' You overpaid and %d was returned to your account', abs($amountLeft));
+                    $payment->setAmount($payment->getAmount() + $amountLeft);
+                }
+
+                $this->addFlash('success', $message);
+            }
+
             $paymentRepository->save($payment, true);
 
             return $this->redirectToRoute('app_payment_index', [], Response::HTTP_SEE_OTHER);

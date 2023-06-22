@@ -18,11 +18,11 @@ class ProfileController extends AbstractController
         ]);
     }
 
-    #[Route('/my_credits', name: 'app_my_credits')]
-    public function my_credits(CreditRepository $cr): Response {
-        return $this->render('credit/index.html.twig', [
-            'credits' => $this->getUser()->getCredits(),
-            'controller_name' => 'CREDITS!!',
-        ]);
-    }
+    // #[Route('/my_credits', name: 'app_my_credits')]
+    // public function my_credits(CreditRepository $cr): Response {
+    //     return $this->render('credit/index.html.twig', [
+    //         'credits' => $this->getUser()->getCredits(),
+    //         'controller_name' => 'CREDITS!!',
+    //     ]);
+    // }
 }

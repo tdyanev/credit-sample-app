@@ -16,23 +16,30 @@
                 <td>{{ credit.amount }}</td>
             </tr>
             <tr>
-                <th>Deadline_months</th>
+                <th>Deadline months</th>
                 <td>{{ credit.deadlineMonths }}</td>
             </tr>
             <tr>
-                <th>Date_issued</th>
+                <th>Date issued</th>
                 <td>{{ credit.dateIssued ? credit.dateIssued|date('Y-m-d') : '' }}</td>
             </tr>
+            {% if credit.getAmountLeft() %}
             <tr>
                 <th>Amount left:</th>
                 <td>{{ credit.getAmountLeft() }}</td>
             </tr>
+            {% else %}
+            <tr>
+                <th>Date finished</th>
+                <td>{{ credit.getFinishedAt() ? credit.getFinishedAt()|date('Y-m-d') : '' }}</td>
+            </tr>
+            {% endif %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_credit_index') }}">back to list</a>
+    {# <a href="{{ path('app_credit_index') }}">back to list</a>
 
     <a href="{{ path('app_credit_edit', {'id': credit.id}) }}">edit</a>
 
-    {{ include('credit/_delete_form.html.twig') }}
+    {{ include('credit/_delete_form.html.twig') }} #}
 {% endblock %}

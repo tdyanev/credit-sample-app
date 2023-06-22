@@ -12,7 +12,7 @@
                 <th>Owner</th>
                 <th>Credit id</th>
                 <th>Amount</th>
-                <th>actions</th>
+                <th>Date</th>
             </tr>
         </thead>
         <tbody>
@@ -20,11 +20,11 @@
             <tr>
                 <td>{{ payment.id }}</td>
                 <td>{{ payment.getOwner().getFullName() }}</td>
-                <td>{{ payment.getCredit().getId() }}</td>
+                <td><a href="{{ path('app_credit_show', {'id': payment.getCredit().getId() }) }}">{{ payment.getCredit().getName() }}</a></td>
                 <td>{{ payment.amount }}</td>
-                <td>
+                <td>{{ payment.date ? payment.date|date('Y-m-d H:i:s') : '' }}
                     {# <a href="{{ path('app_payment_show', {'id': payment.id}) }}">show</a> #}
-                    <a href="{{ path('app_payment_edit', {'id': payment.id}) }}">edit</a>
+                    {# <a href="{{ path('app_payment_edit', {'id': payment.id}) }}">edit</a> #}
                 </td>
             </tr>
         {% else %}

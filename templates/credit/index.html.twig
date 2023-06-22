@@ -3,7 +3,7 @@
 {% block title %}Credit index{% endblock %}
 
 {% block body %}
-    <h1>Credit index</h1>
+    <h1>{{ title }}</h1>
 
     <table class="table">
         <thead>
@@ -12,9 +12,12 @@
                 <th>User</th>
                 <th>Amount</th>
                 <th>Left to pay:</th>
+                <th>Initial monthly payment</th>
                 <th>Deadline</th>
 
+                {% if canPay %}
                 <th>actions</th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
@@ -22,15 +25,20 @@
             <tr>
                 <td>{{ credit.id }}</td>
                 <td>{{ credit.getOwner().getFullName() }}</td>
-                <td>{{ credit.amount }}</td>
-                <td>{{ credit.getAmountLeft() }}</td>
+                <td>{{ credit.amount|number_format(2, '.', ',') }}</td>
+                <td>{{ credit.getAmountLeft()|number_format(2, '.', ',') }}</td>
+                <td>{{ credit.getMonthlyPayment()|number_format(2, '.', ',') }}</td>
                 <td>{{ credit.getDeadlineDate() ? credit.getDeadlineDate()|date('Y-m-d') : '' }}</td>
 
+                {% if canPay %}
                 <td>
-                    <a href="{{ path('app_credit_show', {'id': credit.id}) }}">show</a>
-                    <a href="{{ path('app_credit_edit', {'id': credit.id}) }}">edit</a>
+                    {% if credit.getAmountLeft() > 0 %}
+                    {# <a href="{{ path('app_credit_show', {'id': credit.id}) }}">details</a>
+                    <a href="{{ path('app_credit_edit', {'id': credit.id}) }}">edit</a> #}
                     <a href="{{ path('app_payment_new', {'credit_id': credit.id}) }}">pay</a>
+                    {% endif %}
                 </td>
+                {% endif %}
             </tr>
         {% else %}
             <tr>

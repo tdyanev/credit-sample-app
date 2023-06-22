@@ -9,6 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+
 #[ORM\Entity(repositoryClass: CreditRepository::class)]
 class Credit
 {
@@ -158,5 +159,13 @@ class Credit
 
     public function isFinished(): bool {
         return !!$this->finished_at;
+    }
+
+    public function getName(): string {
+        return sprintf('Credit #%d for %d', $this->id, $this->amount);
+    }
+
+    public function getMonthlyPayment() {
+        return $this->amount / $this->deadline_months;
     }
 }

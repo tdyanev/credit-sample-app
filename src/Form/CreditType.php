@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Credit;
 use App\Entity\User;
+use App\Validator\MaxCreditAmount;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -14,13 +15,21 @@ class CreditType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('amount')
+            ->add('amount', null, [
+                'constraints' => [
+                    new MaxCreditAmount([
+                         //'message' => 'Please enter {{ value }} a password',
+                    ]),
+
+                ]
+
+            ])
             ->add('deadline_months')
             //->add('date_issued')
-            ->add('owner', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'full_name',
-            ])
+            // ->add('owner', EntityType::class, [
+            //     'class' => User::class,
+            //     'choice_label' => 'full_name',
+            // ])
         ;
     }
 
